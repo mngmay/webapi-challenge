@@ -64,7 +64,7 @@ router.put("/:id", validateProjectId, (req, res) => {
     return res.status(400).json({ error: "Missing property data" });
   }
 
-  if (changes.name || changes.description || changes.description) {
+  if (changes.name || changes.description || changes.completed) {
     Projects.update(id, changes)
       .then(updated => res.status(200).json(updated))
       .catch(error =>
@@ -110,4 +110,4 @@ function validateProject(req, res, next) {
   next();
 }
 
-module.exports = { router: router, validateProjectId: validateProjectId };
+module.exports = router;

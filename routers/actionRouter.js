@@ -1,8 +1,7 @@
 const router = require("express").Router();
 
 const Actions = require("../data/helpers/actionModel.js");
-const projects = require("./projectRouter.js");
-
+const Projects = require("../data/helpers/projectModel.js");
 // GET /actions
 
 router.get("/", (req, res) => {
@@ -31,7 +30,7 @@ router.get("/:id", validateActionId, (req, res) => {
 
 // POST action
 
-router.post("/", validateAction, projects.validateProjectId, (req, res) => {
+router.post("/", validateAction, (req, res) => {
   const action = req.body;
 
   Actions.insert(action)
@@ -52,6 +51,47 @@ router.delete("/:id", validateActionId, (req, res) => {
     .then(action => res.status(200).json(action))
     .catch(error =>
       res.status(500).json({ error: "The action could not be deleted." })
+    );
+});
+
+// PUT/update action by id
+
+router.put("/:id", validateActionId, (req, res) => {
+  const id = req.params.id;
+  const projectId = req.body.project_id;
+  const changes = req.body;
+
+  if (Object.keys(changes) < 1) {
+    return res.status(400).json({ error: "Missing property data" });
+  }
+
+  Projects.get(projectId)
+    .then(project => {
+      if (project) {
+        if (
+          changes.description ||
+          changes.notes ||
+          changes.project_id ||
+          changes.completed
+        ) {
+          Actions.update(id, changes)
+            .then(updated => res.status(200).json(updated))
+            .catch(error =>
+              res
+                .status(500)
+                .json({ error: "The action could not be updated." })
+            );
+        } else {
+          return res
+            .status(400)
+            .json({ error: "Please provide a valid property to update." });
+        }
+      } else {
+        return res.status(400).json({ error: "Invalid project id." });
+      }
+    })
+    .catch(error =>
+      res.status(500).json({ error: "The action could not be updated." })
     );
 });
 
