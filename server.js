@@ -10,8 +10,8 @@ const server = express();
 server.use(express.json());
 
 //use routers
-// server.use("/projects", projectRouter);
-// server.use("/actions", actionRouter);
+server.use("/projects", projectRouter);
+server.use("/actions", actionRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json({ message: "API is up" });
