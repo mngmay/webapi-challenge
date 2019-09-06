@@ -110,4 +110,4 @@ function validateProject(req, res, next) {
   next();
 }
 
-module.exports = router;
+module.exports = { router: router, validateProjectId: validateProjectId };
