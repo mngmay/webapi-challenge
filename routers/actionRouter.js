@@ -120,7 +120,7 @@ function validateActionId(req, res, next) {
 }
 
 function validateAction(req, res, next) {
-  if (Object.keys(req.body) < 1) {
+  if (Object.keys(req.body).length < 1) {
     return res.status(400).json({ message: "Missing action data" });
   }
   if (!req.body.description || !req.body.project_id || !req.body.notes) {

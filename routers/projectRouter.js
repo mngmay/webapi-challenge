@@ -63,7 +63,7 @@ router.put("/:id", validateProjectId, (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
-  if (Object.keys(changes) < 1) {
+  if (Object.keys(changes).length < 1) {
     return res.status(400).json({ error: "Missing property data" });
   }
 
@@ -101,7 +101,7 @@ function validateProjectId(req, res, next) {
 }
 
 function validateProject(req, res, next) {
-  if (Object.keys(req.body) < 1) {
+  if (Object.keys(req.body).length < 1) {
     return res.status(400).json({ message: "Missing project data" });
   }
   if (!req.body.name || !req.body.description) {
