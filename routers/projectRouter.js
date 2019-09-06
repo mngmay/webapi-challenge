@@ -5,6 +5,7 @@ const Projects = require("../data/helpers/projectModel.js");
 // GET /projects
 
 router.get("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   Projects.get()
     .then(projects => {
       res.status(200).json(projects);
