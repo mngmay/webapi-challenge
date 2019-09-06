@@ -43,6 +43,18 @@ router.post("/", validateAction, projects.validateProjectId, (req, res) => {
     );
 });
 
+// DELETE action by id
+
+router.delete("/:id", validateActionId, (req, res) => {
+  const id = req.params.id;
+
+  Actions.remove(id)
+    .then(action => res.status(200).json(action))
+    .catch(error =>
+      res.status(500).json({ error: "The action could not be deleted." })
+    );
+});
+
 // custom middleware
 
 function validateActionId(req, res, next) {
