@@ -42,6 +42,18 @@ router.post("/", validateProject, (req, res) => {
     });
 });
 
+// DELETE a project
+
+router.delete("/:id", validateProjectId, (req, res) => {
+  const id = req.params.id;
+
+  Projects.remove(id)
+    .then(project => res.status(200).json(project))
+    .catch(error =>
+      res.status(500).json({ error: "The project could not be deleted" })
+    );
+});
+
 // custom middleware
 
 function validateProjectId(req, res, next) {
