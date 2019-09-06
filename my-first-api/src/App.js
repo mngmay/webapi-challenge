@@ -24,9 +24,27 @@ function App() {
 
   return (
     <div className="App">
-      {projects.map(project => (
-        <div>{project.name}</div>
-      ))}
+      <h1>List of Projects</h1>
+      <div className="project-details">
+        <div className="project-name">
+          <h4>Name</h4>
+          {projects.map(project => (
+            <div>{project.name}</div>
+          ))}
+        </div>
+        <div className="project-description">
+          <h4>Description</h4>
+          {projects.map(project => (
+            <div>{project.description}</div>
+          ))}
+        </div>
+        <div className="project-status">
+          <h4>Status</h4>
+          {projects.map(project => (
+            <div>{project.completed ? "Done" : "Not Completed"}</div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
