@@ -30,7 +30,7 @@ router.get("/:id", validateActionId, (req, res) => {
 
 // POST action
 
-router.post("/", validateAction, (req, res) => {
+router.post("/", validateAction, validateProjectId, (req, res) => {
   const action = req.body;
 
   Actions.insert(action)
@@ -48,13 +48,17 @@ router.delete("/:id", validateActionId, (req, res) => {
   const id = req.params.id;
 
   Actions.remove(id)
-    .then(action => res.status(200).json(action))
+    .then(action =>
+      res
+        .status(200)
+        .json({ message: `Action ${id} has been successfully deleted.` })
+    )
     .catch(error =>
       res.status(500).json({ error: "The action could not be deleted." })
     );
 });
 
-// PUT/update action by id
+// PUT/update action by id  //did projectId validation w/o middleware for more reps
 
 router.put("/:id", validateActionId, (req, res) => {
   const id = req.params.id;
@@ -126,6 +130,22 @@ function validateAction(req, res, next) {
   }
 
   next();
+}
+
+function validateProjectId(req, res, next) {
+  let id = req.body.project_id;
+
+  Projects.get(id)
+    .then(project => {
+      if (project) {
+        next();
+      } else {
+        res.status(400).json({ message: "Invalid project id" });
+      }
+    })
+    .catch(error =>
+      res.status(500).json({ error: "The project could not be retrieved" })
+    );
 }
 
 module.exports = router;
